@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Home } from "lucide-react";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes, Navigate } from "react-router-dom";
 import Layout from "./layouts/sidebar"; // Use the sidebar layout
 import Index from "./pages/Index.jsx";
 const queryClient = new QueryClient();
@@ -15,6 +15,16 @@ export const navItems = [
   },
 ];
 
+// Add a placeholder Login component
+const Login = () => {
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <h1 className="text-3xl font-bold mb-4">Login Page</h1>
+      {/* Add your login form here */}
+    </div>
+  );
+};
+
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
@@ -26,6 +36,8 @@ const App = () => {
               <Route index element={<Index />} />
               {/* Add more routes here as needed */}
             </Route>
+            <Route path="/login" element={<Login />} />
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Router>
       </TooltipProvider>

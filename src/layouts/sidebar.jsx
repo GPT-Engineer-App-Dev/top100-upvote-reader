@@ -10,18 +10,28 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { CircleUser, Menu, Newspaper } from "lucide-react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { navItems } from "../App";
 
 const Layout = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear user session data (if any)
+    // For example, localStorage.removeItem("userToken");
+
+    // Redirect to the login page
+    navigate("/login");
+  };
+
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-      <Sidebar />
+      <Sidebar handleLogout={handleLogout} />
       <div className="flex flex-col">
         <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
-          <MobileSidebar />
+          <MobileSidebar handleLogout={handleLogout} />
           <div className="w-full flex-1">{/* Add nav bar content here! */}</div>
-          <UserDropdown />
+          <UserDropdown handleLogout={handleLogout} />
         </header>
         <main className="flex-grow p-4 overflow-auto bg-gray-50">
           <Outlet />
@@ -31,7 +41,7 @@ const Layout = () => {
   );
 };
 
-const Sidebar = () => (
+const Sidebar = ({ handleLogout }) => (
   <div className="hidden border-r bg-muted/40 md:block">
     <div className="flex h-full max-h-screen flex-col gap-2">
       <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
@@ -54,7 +64,7 @@ const Sidebar = () => (
   </div>
 );
 
-const MobileSidebar = () => (
+const MobileSidebar = ({ handleLogout }) => (
   <Sheet>
     <SheetTrigger asChild>
       <Button variant="outline" size="icon" className="shrink-0 md:hidden">
@@ -76,12 +86,15 @@ const MobileSidebar = () => (
             {item.title}
           </SidebarNavLink>
         ))}
+        <Button onClick={handleLogout} variant="outline" className="mt-4">
+          Logout
+        </Button>
       </nav>
     </SheetContent>
   </Sheet>
 );
 
-const UserDropdown = () => (
+const UserDropdown = ({ handleLogout }) => (
   <DropdownMenu>
     <DropdownMenuTrigger asChild>
       <Button variant="secondary" size="icon" className="rounded-full">
@@ -95,7 +108,7 @@ const UserDropdown = () => (
       <DropdownMenuItem>Settings</DropdownMenuItem>
       <DropdownMenuItem>Support</DropdownMenuItem>
       <DropdownMenuSeparator />
-      <DropdownMenuItem>Logout</DropdownMenuItem>
+      <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
 );
