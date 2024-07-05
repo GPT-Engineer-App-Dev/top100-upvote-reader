@@ -36,6 +36,7 @@ const Layout = () => {
         <main className="flex-grow p-4 overflow-auto bg-gray-50">
           <Outlet />
         </main>
+        <Footer />
       </div>
     </div>
   );
@@ -125,6 +126,14 @@ const SidebarNavLink = ({ to, children }) => (
   >
     {children}
   </NavLink>
+);
+
+const Footer = () => (
+  <footer className="flex items-center justify-center h-16 border-t bg-muted/40 px-4 lg:h-[60px] lg:px-6">
+    <div className="text-center text-sm text-muted-foreground">
+      © 2023 Hacker News Top Stories. <a href="/privacy-policy" className="underline">Privacy Policy</a>
+    </div>
+  </footer>
 );
 
 export default Layout;
