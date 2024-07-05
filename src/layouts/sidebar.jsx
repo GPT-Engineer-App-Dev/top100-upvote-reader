@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { CircleUser, Menu, Newspaper } from "lucide-react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { navItems } from "../App";
+import Footer from "../components/Footer"; // Import the Footer component
 
 const Layout = () => {
   const navigate = useNavigate();
@@ -36,6 +37,7 @@ const Layout = () => {
         <main className="flex-grow p-4 overflow-auto bg-gray-50">
           <Outlet />
         </main>
+        <Footer /> {/* Add the Footer component here */}
       </div>
     </div>
   );
@@ -128,3 +130,9 @@ const SidebarNavLink = ({ to, children }) => (
 );
 
 export default Layout;
+
+const Footer = () => (
+  <footer className="bg-muted/40 p-4 text-center">
+    <p className="text-sm text-muted-foreground">© 2023 Hacker News Top Stories. All rights reserved.</p>
+  </footer>
+);
