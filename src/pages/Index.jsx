@@ -4,6 +4,11 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { createApi } from "unsplash-js";
+
+const unsplash = createApi({
+  accessKey: "YOUR_UNSPLASH_ACCESS_KEY",
+});
 
 const fetchTopStories = async () => {
   const response = await fetch(
@@ -26,11 +31,27 @@ const fetchTopStories = async () => {
   return Promise.all(storyPromises);
 };
 
+const fetchRandomImage = async () => {
+  const result = await unsplash.photos.getRandom();
+  if (!result.response) {
+    throw new Error("Failed to fetch image from Unsplash");
+  }
+  return result.response.urls.regular;
+};
+
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const { data, error, isLoading } = useQuery({
     queryKey: ["topStories"],
     queryFn: fetchTopStories,
+  });
+  const {
+    data: imageUrl,
+    error: imageError,
+    isLoading: isImageLoading,
+  } = useQuery({
+    queryKey: ["randomImage"],
+    queryFn: fetchRandomImage,
   });
 
   const filteredStories = data?.filter((story) =>
@@ -47,6 +68,18 @@ const Index = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
         className="mb-4"
       />
+      {isImageLoading && <Skeleton className="h-64 w-full mb-4" />}
+      {imageError && (
+        <Alert>
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>
+            There was an error fetching the image.
+          </AlertDescription>
+        </Alert>
+      )}
+      {imageUrl && (
+        <img src={imageUrl} alt="Random from Unsplash" className="w-full h-64 object-cover mb-4 rounded-lg" />
+      )}
       {isLoading && (
         <div className="grid gap-4">
           {Array.from({ length: 10 }).map((_, index) => (
