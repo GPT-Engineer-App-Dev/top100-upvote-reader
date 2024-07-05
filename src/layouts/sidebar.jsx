@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import Footer from "@/components/Footer";
 import { CircleUser, Menu, Newspaper } from "lucide-react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { navItems } from "../App";
@@ -36,6 +37,7 @@ const Layout = () => {
         <main className="flex-grow p-4 overflow-auto bg-gray-50">
           <Outlet />
         </main>
+        <Footer />
       </div>
     </div>
   );
